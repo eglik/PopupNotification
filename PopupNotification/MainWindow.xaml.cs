@@ -29,16 +29,20 @@ namespace PopupNotification
 
         public MainWindow()
         {
+            OpenDirectoryDialog();
             InitializeComponent();
             directoryThread = new DirectoryThread(this);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
             directoryThread.Start();
         }
 
-        public void OpenPopupDialog(string message)
+        public void SetDirectorys(Dictionary<string, DateTime> datas) => directorys = datas;
+
+        public Dictionary<string, DateTime> GetDirectorys()
+        {
+            return directorys;
+        }
+
+        public void OpenPopupDialog(string message, PopupNotificationState state)
         {
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
             {
@@ -52,32 +56,28 @@ namespace PopupNotification
                         {
                             if (i == 0)
                             {
-                                popupNotificationDialogs[i] = new PopupNotificationDialog(message, null);
+                                popupNotificationDialogs[i] = new PopupNotificationDialog(message, null, state);
                             }
                             else
                             {
-                                popupNotificationDialogs[i] = new PopupNotificationDialog(message, popupNotificationDialogs[i - 1]);
+                                popupNotificationDialogs[i] = new PopupNotificationDialog(message, popupNotificationDialogs[i - 1], state);
                             }
                             popupNotificationDialogs[i].popup.Show();
                             return;
                         }
                         //MessageBox.Show(popupNotificationDialogs[i].popup.Opacity.ToString());
                     }
-                    popup = new PopupNotificationDialog(message, popupNotificationDialogs[popupNotificationDialogs.Count - 1]);
+                    popup = new PopupNotificationDialog(message, popupNotificationDialogs[popupNotificationDialogs.Count - 1], state);
                 }
                 else
                 {
-                    popup = new PopupNotificationDialog(message, null);
+                    popup = new PopupNotificationDialog(message, null, state);
                 }
 
                 popupNotificationDialogs.Add(popup);
                 popup.Show();
             }));
         }
-
-        public void SetDictionary(Dictionary<string, DateTime> list) => directorys = list;
-
-        public string folderPath;
 
         public void OpenDirectoryDialog()
         {
@@ -86,9 +86,9 @@ namespace PopupNotification
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                folderPath = dialog.FileName;
+                DirectoryPath.Path = dialog.FileName;
 
-                DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+                DirectoryInfo directoryInfo = new DirectoryInfo(DirectoryPath.Path);
 
                 foreach (var directory in directoryInfo.GetDirectories())
                 {

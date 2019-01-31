@@ -34,16 +34,14 @@ namespace PopupNotification
             popupDialog = dialog;
         }
 
-
-        public void CloseFadein()
+        public void StartCloseAnimation()
         {
-            Thread.Sleep(5000);
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
             {
                 Storyboard storyboard = new Storyboard();
 
                 DoubleAnimation animation = new DoubleAnimation(1, 0, new TimeSpan(0, 0, 0, 0, 500));
-                
+
                 animation.Completed += AnimationCompleted;
 
                 storyboard.Children.Add(animation);
@@ -52,6 +50,12 @@ namespace PopupNotification
                 Storyboard.SetTargetProperty(animation, new PropertyPath("Opacity"));
                 storyboard.Begin();
             }));
+        }
+
+        public void CloseFadein()
+        {
+            Thread.Sleep(5000);
+            StartCloseAnimation();
         }
 
         private void AnimationCompleted(object sender, EventArgs e)

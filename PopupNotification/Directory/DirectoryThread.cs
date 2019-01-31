@@ -13,9 +13,12 @@ namespace PopupNotification
         Thread thread;
         MainWindow mainWindow;
 
+        DirectorySync sync;
+
         public DirectoryThread(MainWindow main)
         {
             mainWindow = main;
+            sync = new DirectorySync(main);
             thread = new Thread(new ThreadStart(Run));
         }
 
@@ -24,7 +27,7 @@ namespace PopupNotification
             while(true)
             {
                 Thread.Sleep(1000);
-                mainWindow.OpenPopupDialog("TESTING");
+                mainWindow.SetDirectorys(sync.Synchronize());
             }
         }
 

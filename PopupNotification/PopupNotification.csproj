@@ -69,6 +69,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Directory\DirectoryPath.cs" />
+    <Compile Include="Directory\DirectorySync.cs" />
     <Compile Include="Directory\DirectoryThread.cs" />
     <Compile Include="Extension\csjosa.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -81,6 +83,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Popup\PopupNotificationState.cs" />
     <Compile Include="Popup\Window\Popup.xaml.cs">
       <DependentUpon>Popup.xaml</DependentUpon>
     </Compile>

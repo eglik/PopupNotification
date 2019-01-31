@@ -15,11 +15,21 @@ namespace PopupNotification
     {
         public Popup popup;
 
-        public PopupNotificationDialog(string message, PopupNotificationDialog dialog)
+        public PopupNotificationDialog(string message, PopupNotificationDialog dialog, PopupNotificationState state)
         {
             popup = new Popup();
 
-            popup.text.Text = Korean.ReplaceJosa(message + "(이)가 변경되었습니다");
+            switch (state)
+            {
+                case PopupNotificationState.Created:
+                    popup.text.Text = Korean.ReplaceJosa(message + "(이)가 추가되었습니다");
+                    break;
+
+                case PopupNotificationState.Changed:
+                    popup.text.Text = Korean.ReplaceJosa(message + "(이)가 변경되었습니다");
+                    break;
+            }
+
 
             popup.Width = 60 + MeasureString(popup.text.Text);
             CornerRadius cornerRadius = new CornerRadius(5);
