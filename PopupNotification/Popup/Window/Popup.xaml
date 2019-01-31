@@ -1,0 +1,44 @@
+﻿<Window x:Class="PopupNotification.Popup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PopupNotification"
+        mc:Ignorable="d"
+        x:Name="popup"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Title="PopupNotification" Height="44" Width="800" Background="{x:Null}" Foreground="{x:Null}"
+        ShowInTaskbar="False"
+        Topmost="True">
+    <Grid>
+        <Border x:Name="background" Background="#2d2d2d">
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation From="0.0" To="1.0"
+                                            Duration="0:0:0.5"
+                                            Storyboard.TargetName="popup" 
+                                            Storyboard.TargetProperty="Opacity"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Border.Triggers>
+        </Border>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Name="image" Width="25" 
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Source="C:\Users\FAMOZ-22\source\repos\PopupNotification\PopupNotification\Resources\notification-3.png"/>
+            <TextBlock x:Name="text" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                           Grid.Column="1" Text="CustomNotification Message" Foreground="White" TextWrapping="Wrap" FontFamily="NanumGothic" FontSize="14"/>
+        </Grid>
+    </Grid>
+</Window>
