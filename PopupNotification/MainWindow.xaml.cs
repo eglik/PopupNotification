@@ -27,15 +27,12 @@ namespace PopupNotification
 
         public MainWindow()
         {
-            OpenDirectoryDialog();
             InitializeComponent();
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //OpenDirectoryDialog();
-            DirectoryFinder.Run(directorys);
             //PopupNotificationDialog popup;
 
             //if (popupNotificationDialogs.Count > 0)
