@@ -69,7 +69,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DirectoryFinder\DirectoryFinder.cs" />
+    <Compile Include="Directory\DirectoryThread.cs" />
     <Compile Include="Extension\csjosa.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

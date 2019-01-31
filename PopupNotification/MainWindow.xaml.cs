@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PopupNotification
 {
@@ -22,54 +23,63 @@ namespace PopupNotification
     /// </summary>
     public partial class MainWindow : Window
     {
-        static Dictionary<string, DateTime> directorys = new Dictionary<string, DateTime>();
-        static List<PopupNotificationDialog> popupNotificationDialogs = new List<PopupNotificationDialog>();
+        Dictionary<string, DateTime> directorys = new Dictionary<string, DateTime>();
+        List<PopupNotificationDialog> popupNotificationDialogs = new List<PopupNotificationDialog>();
+        DirectoryThread directoryThread;
 
         public MainWindow()
         {
             InitializeComponent();
+            directoryThread = new DirectoryThread(this);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //OpenDirectoryDialog();
-            //PopupNotificationDialog popup;
-
-            //if (popupNotificationDialogs.Count > 0)
-            //{
-            //    for (int i = 0; i < popupNotificationDialogs.Count; i++)
-            //    {
-            //        if (popupNotificationDialogs[i].popup.Opacity == 0)
-            //        {
-            //            if (i == 0)
-            //            {
-            //                popupNotificationDialogs[i] = new PopupNotificationDialog(textBox1.Text, null);
-            //            }
-            //            else
-            //            {
-            //                popupNotificationDialogs[i] = new PopupNotificationDialog(textBox1.Text, popupNotificationDialogs[i - 1]);
-            //            }
-            //            popupNotificationDialogs[i].popup.Show();
-            //            return;
-            //        }
-            //        //MessageBox.Show(popupNotificationDialogs[i].popup.Opacity.ToString());
-            //    }
-            //    popup = new PopupNotificationDialog(textBox1.Text, popupNotificationDialogs[popupNotificationDialogs.Count - 1]);
-            //}
-            //else
-            //{
-            //    popup = new PopupNotificationDialog(textBox1.Text, null);
-            //}
-
-            //popupNotificationDialogs.Add(popup);
-            //popup.Show();
+            directoryThread.Start();
         }
 
-        public static void SetDictionary(Dictionary<string, DateTime> list) => directorys = list;
+        public void OpenPopupDialog(string message)
+        {
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+            {
+                PopupNotificationDialog popup;
 
-        public static string folderPath;
+                if (popupNotificationDialogs.Count > 0)
+                {
+                    for (int i = 0; i < popupNotificationDialogs.Count; i++)
+                    {
+                        if (popupNotificationDialogs[i].popup.Opacity == 0)
+                        {
+                            if (i == 0)
+                            {
+                                popupNotificationDialogs[i] = new PopupNotificationDialog(message, null);
+                            }
+                            else
+                            {
+                                popupNotificationDialogs[i] = new PopupNotificationDialog(message, popupNotificationDialogs[i - 1]);
+                            }
+                            popupNotificationDialogs[i].popup.Show();
+                            return;
+                        }
+                        //MessageBox.Show(popupNotificationDialogs[i].popup.Opacity.ToString());
+                    }
+                    popup = new PopupNotificationDialog(message, popupNotificationDialogs[popupNotificationDialogs.Count - 1]);
+                }
+                else
+                {
+                    popup = new PopupNotificationDialog(message, null);
+                }
 
-        public static void OpenDirectoryDialog()
+                popupNotificationDialogs.Add(popup);
+                popup.Show();
+            }));
+        }
+
+        public void SetDictionary(Dictionary<string, DateTime> list) => directorys = list;
+
+        public string folderPath;
+
+        public void OpenDirectoryDialog()
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
@@ -85,6 +95,11 @@ namespace PopupNotification
                     directorys.Add(directory.Name, directory.LastWriteTime);
                 }
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            directoryThread.Abort();
         }
     }
 }
