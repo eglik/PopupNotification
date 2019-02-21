@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/notification.svg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("foldertray.ico")]
 
 

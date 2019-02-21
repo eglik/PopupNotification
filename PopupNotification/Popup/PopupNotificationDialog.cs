@@ -9,27 +9,17 @@ using System.Windows;
 using System.Windows.Media;
 using Myevan;
 
-namespace PopupNotification
+namespace StalkerEye
 {
     public class PopupNotificationDialog
     {
         public Popup popup;
 
-        public PopupNotificationDialog(string message, PopupNotificationDialog dialog, PopupNotificationState state)
+        public PopupNotificationDialog(string message, PopupNotificationDialog dialog)
         {
             popup = new Popup();
 
-            switch (state)
-            {
-                case PopupNotificationState.Created:
-                    popup.text.Text = Korean.ReplaceJosa(message + "(이)가 추가되었습니다");
-                    break;
-
-                case PopupNotificationState.Changed:
-                    popup.text.Text = Korean.ReplaceJosa(message + "(이)가 변경되었습니다");
-                    break;
-            }
-
+            popup.text.Text = Korean.ReplaceJosa(message);
 
             popup.Width = 60 + MeasureString(popup.text.Text);
             CornerRadius cornerRadius = new CornerRadius(5);

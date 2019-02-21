@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace PopupNotification
+namespace StalkerEye
 {
     public partial class Popup : Window
     {
